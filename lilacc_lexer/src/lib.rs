@@ -36,10 +36,10 @@ impl<'input> Lexer<'input> {
         match self.ch {
             Some(ch) => {
                 if !ch.is_digit(10) {
-                    panic!("a")
+                    panic!("A non-numeric value was entered")
                 }
             }
-            None => panic!("s"),
+            None => panic!("Entered string has already reached the end."),
         }
 
         let mut lit = String::from(self.ch.unwrap());
