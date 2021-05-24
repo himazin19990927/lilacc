@@ -1,0 +1,116 @@
+use core::panic;
+use lilacc_token::{Token, TokenKind};
+use std::str::Chars;
+
+#[derive(Debug)]
+pub struct Lexer<'input> {
+    chars: Chars<'input>,
+    ch: Option<char>,
+}
+
+impl<'input> Lexer<'input> {
+    pub fn new(input: &'input str) -> Self {
+        let mut lexer = Lexer {
+            chars: input.chars(),
+            ch: None,
+        };
+        lexer.read_char();
+
+        lexer
+    }
+
+    fn read_char(&mut self) {
+        self.ch = self.chars.next();
+    }
+
+    fn skip_whitespace(&mut self) {
+        while let Some(c) = self.ch {
+            if !c.is_whitespace() {
+                break;
+            }
+            self.read_char();
+        }
+    }
+
+    fn read_number(&mut self) -> Token {
+        match self.ch {
+            Some(ch) => {
+                if !ch.is_digit(10) {
+                    panic!("a")
+                }
+            }
+            None => panic!("s"),
+        }
+
+        let mut lit = String::from(self.ch.unwrap());
+        loop {
+            self.read_char();
+            if let Some(c) = self.ch {
+                if c.is_digit(10) {
+                    lit.push(c);
+                    continue;
+                }
+            }
+            break;
+        }
+
+        Token {
+            kind: TokenKind::Num,
+            literal: lit,
+        }
+    }
+
+    pub fn next_token(&mut self) -> Option<Token> {
+        self.skip_whitespace();
+
+        let token = match self.ch {
+            Some(ch) => Some(match ch {
+                '+' => Token::new(TokenKind::Plus, ch),
+                '-' => Token::new(TokenKind::Minus, ch),
+                '*' => Token::new(TokenKind::Star, ch),
+                '/' => Token::new(TokenKind::Slash, ch),
+
+                '0'..='9' => return Some(self.read_number()),
+                _ => unimplemented!(),
+            }),
+            None => None,
+        };
+
+        self.read_char();
+
+        token
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    macro_rules! test_lexer {
+        ($input: expr, $expected: expr) => {
+            let mut lexer = Lexer::new($input);
+            let mut tokens: Vec<Token> = Vec::new();
+
+            while let Some(token) = lexer.next_token() {
+                tokens.push(token);
+            }
+
+            assert_eq!($expected, tokens);
+        };
+    }
+
+    #[test]
+    fn num() {
+        test_lexer!("1", vec![Token::new(TokenKind::Num, "1"),]);
+        test_lexer!("10", vec![Token::new(TokenKind::Num, "10"),]);
+
+        test_lexer!(
+            "10+20",
+            vec![
+                Token::new(TokenKind::Num, "10"),
+                Token::new(TokenKind::Plus, "+"),
+                Token::new(TokenKind::Num, "20"),
+            ]
+        );
+    }
+}
