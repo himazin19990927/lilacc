@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 lilacc_token = {path = "lilacc_token"}
+lilacc_lexer = {path = "lilacc_lexer"}
