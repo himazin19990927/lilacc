@@ -70,6 +70,9 @@ impl<'input> Lexer<'input> {
                 '*' => Token::new(TokenKind::Star, ch),
                 '/' => Token::new(TokenKind::Slash, ch),
 
+                '(' => Token::new(TokenKind::OpenParen, ch),
+                ')' => Token::new(TokenKind::CloseParen, ch),
+
                 '0'..='9' => return Some(self.read_number()),
                 _ => unimplemented!(),
             }),
@@ -110,6 +113,26 @@ mod tests {
                 Token::new(TokenKind::Num, "10"),
                 Token::new(TokenKind::Plus, "+"),
                 Token::new(TokenKind::Num, "20"),
+            ]
+        );
+    }
+
+    #[test]
+    fn paren() {
+        test_lexer!(
+            "()",
+            vec![
+                Token::new(TokenKind::OpenParen, "("),
+                Token::new(TokenKind::CloseParen, ")"),
+            ]
+        );
+
+        test_lexer!(
+            "(1)",
+            vec![
+                Token::new(TokenKind::OpenParen, "("),
+                Token::new(TokenKind::Num, "1"),
+                Token::new(TokenKind::CloseParen, ")"),
             ]
         );
     }
