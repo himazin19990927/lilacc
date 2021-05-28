@@ -26,6 +26,4 @@ pub enum TokenKind {
 
     OpenParen,
     CloseParen,
-
-    Eof,
 }
