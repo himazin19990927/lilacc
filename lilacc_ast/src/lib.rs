@@ -20,3 +20,22 @@ pub enum BinOp {
 pub enum UnOp {
     Neg,
 }
+
+#[derive(Debug, PartialEq, Clone)]
+pub enum Expr {
+    Binary(ExprBinary),
+    Unary(ExprUnary),
+}
+
+#[derive(Debug, PartialEq, Clone)]
+pub struct ExprBinary {
+    pub left: Box<Expr>,
+    pub op: BinOp,
+    pub right: Box<Expr>,
+}
+
+#[derive(Debug, PartialEq, Clone)]
+pub struct ExprUnary {
+    pub op: UnOp,
+    pub expr: Box<Expr>,
+}
