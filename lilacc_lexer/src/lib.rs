@@ -60,6 +60,35 @@ impl<'input> Lexer<'input> {
         }
     }
 
+    fn read_str(&mut self) -> String {
+        let is_letter = |c: char| c.is_ascii_alphanumeric() || c == '_';
+
+        let ch = self
+            .ch
+            .expect("Entered string has already reached the end.");
+
+        if !is_letter(ch) {
+            panic!("A non-alphanumeric character was enterd.");
+        }
+
+        let mut literal = String::from(ch);
+        loop {
+            self.read_char();
+            match self.ch {
+                Some(ch) => {
+                    if is_letter(ch) {
+                        literal.push(ch);
+                    } else {
+                        break;
+                    }
+                }
+                None => break,
+            }
+        }
+
+        literal
+    }
+
     pub fn next_token(&mut self) -> Option<Token> {
         self.skip_whitespace();
 
@@ -74,7 +103,10 @@ impl<'input> Lexer<'input> {
                 ')' => Token::new(TokenKind::CloseParen, ch),
 
                 '0'..='9' => return Some(self.read_number()),
-                _ => unimplemented!(),
+                _ => {
+                    let literal = self.read_str();
+                    return Some(Token::new(TokenKind::Ident, literal));
+                }
             }),
             None => None,
         };
@@ -133,6 +165,20 @@ mod tests {
                 Token::new(TokenKind::OpenParen, "("),
                 Token::new(TokenKind::Num, "1"),
                 Token::new(TokenKind::CloseParen, ")"),
+            ]
+        );
+    }
+
+    #[test]
+    fn ident() {
+        test_lexer!("a", vec![Token::new(TokenKind::Ident, "a")]);
+        test_lexer!("ab", vec![Token::new(TokenKind::Ident, "ab")]);
+        test_lexer!(
+            "a1+a2",
+            vec![
+                Token::new(TokenKind::Ident, "a1"),
+                Token::new(TokenKind::Plus, "+"),
+                Token::new(TokenKind::Ident, "a2")
             ]
         );
     }
