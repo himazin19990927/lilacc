@@ -183,23 +183,19 @@ mod tests {
         };
     }
 
+    macro_rules! token_bool {
+        ($value: expr) => {
+            Token::Lit(Lit::Bool(LitBool { value: $value }))
+        };
+    }
+
     #[test]
     fn num() {
         test_lexer!("1", vec![token_int!(1)]);
 
-        test_lexer!(
-            "10",
-            vec![token_int!(10)]
-        );
+        test_lexer!("10", vec![token_int!(10)]);
 
-        test_lexer!(
-            "10+20",
-            vec![
-                token_int!(10),
-                Token::Plus,
-                token_int!(20),
-            ]
-        );
+        test_lexer!("10+20", vec![token_int!(10), Token::Plus, token_int!(20),]);
     }
 
     #[test]
@@ -208,11 +204,7 @@ mod tests {
 
         test_lexer!(
             "(1)",
-            vec![
-                Token::OpenParen,
-                token_int!(1),
-                Token::CloseParen,
-            ]
+            vec![Token::OpenParen, token_int!(1), Token::CloseParen,]
         );
     }
 
@@ -235,18 +227,11 @@ mod tests {
     #[test]
     fn lit_bool() {
         test_lexer!("true", vec![Token::Lit(Lit::Bool(LitBool { value: true }))]);
-        test_lexer!(
-            "false",
-            vec![Token::Lit(Lit::Bool(LitBool { value: false }))]
-        );
+        test_lexer!("false", vec![token_bool!(false)]);
 
         test_lexer!(
             "(true)",
-            vec![
-                Token::OpenParen,
-                Token::Lit(Lit::Bool(LitBool { value: true })),
-                Token::CloseParen,
-            ]
+            vec![Token::OpenParen, token_bool!(true), Token::CloseParen,]
         );
     }
 
@@ -258,29 +243,17 @@ mod tests {
 
         test_lexer!(
             "true==false",
-            vec![
-                Token::Lit(Lit::Bool(LitBool { value: true })),
-                Token::EqEq,
-                Token::Lit(Lit::Bool(LitBool { value: false }))
-            ]
+            vec![token_bool!(true), Token::EqEq, token_bool!(false)]
         );
 
         test_lexer!(
             "true&&false",
-            vec![
-                Token::Lit(Lit::Bool(LitBool { value: true })),
-                Token::AndAnd,
-                Token::Lit(Lit::Bool(LitBool { value: false }))
-            ]
+            vec![token_bool!(true), Token::AndAnd, token_bool!(false)]
         );
 
         test_lexer!(
             "true||false",
-            vec![
-                Token::Lit(Lit::Bool(LitBool { value: true })),
-                Token::OrOr,
-                Token::Lit(Lit::Bool(LitBool { value: false }))
-            ]
+            vec![token_bool!(true), Token::OrOr, token_bool!(false)]
         );
     }
 }
