@@ -175,32 +175,29 @@ mod tests {
         };
     }
 
+    macro_rules! token_int {
+        ($value: expr) => {
+            Token::Lit(Lit::Int(LitInt {
+                digits: $value.to_string(),
+            }))
+        };
+    }
+
     #[test]
     fn num() {
-        test_lexer!(
-            "1",
-            vec![Token::Lit(Lit::Int(LitInt {
-                digits: "1".to_string()
-            }))]
-        );
+        test_lexer!("1", vec![token_int!(1)]);
 
         test_lexer!(
             "10",
-            vec![Token::Lit(Lit::Int(LitInt {
-                digits: "10".to_string()
-            }))]
+            vec![token_int!(10)]
         );
 
         test_lexer!(
             "10+20",
             vec![
-                Token::Lit(Lit::Int(LitInt {
-                    digits: "10".to_string()
-                })),
+                token_int!(10),
                 Token::Plus,
-                Token::Lit(Lit::Int(LitInt {
-                    digits: "20".to_string()
-                })),
+                token_int!(20),
             ]
         );
     }
@@ -213,9 +210,7 @@ mod tests {
             "(1)",
             vec![
                 Token::OpenParen,
-                Token::Lit(Lit::Int(LitInt {
-                    digits: "1".to_string()
-                })),
+                token_int!(1),
                 Token::CloseParen,
             ]
         );
