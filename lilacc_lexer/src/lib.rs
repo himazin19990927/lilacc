@@ -260,5 +260,32 @@ mod tests {
         test_lexer!("==", vec![Token::EqEq]);
         test_lexer!("&&", vec![Token::AndAnd]);
         test_lexer!("||", vec![Token::OrOr]);
+
+        test_lexer!(
+            "true==false",
+            vec![
+                Token::Lit(Lit::Bool(LitBool { value: true })),
+                Token::EqEq,
+                Token::Lit(Lit::Bool(LitBool { value: false }))
+            ]
+        );
+
+        test_lexer!(
+            "true&&false",
+            vec![
+                Token::Lit(Lit::Bool(LitBool { value: true })),
+                Token::AndAnd,
+                Token::Lit(Lit::Bool(LitBool { value: false }))
+            ]
+        );
+
+        test_lexer!(
+            "true||false",
+            vec![
+                Token::Lit(Lit::Bool(LitBool { value: true })),
+                Token::OrOr,
+                Token::Lit(Lit::Bool(LitBool { value: false }))
+            ]
+        );
     }
 }
