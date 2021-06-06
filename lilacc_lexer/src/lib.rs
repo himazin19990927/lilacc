@@ -101,8 +101,13 @@ impl<'input> Lexer<'input> {
 
                 '0'..='9' => return Some(self.read_number()),
                 _ => {
-                    let literal = self.read_str();
-                    return Some(Token::Ident(literal));
+                    let token = match self.read_str().as_str() {
+                        "true" => Token::Lit(Lit::Bool(LitBool { value: true })),
+                        "false" => Token::Lit(Lit::Bool(LitBool { value: false })),
+                        ident => Token::Ident(ident.to_string()),
+                    };
+
+                    return Some(token);
                 }
             }),
             None => None,
@@ -127,6 +132,8 @@ impl<'input> Iterator for Lexer<'input> {
 
 #[cfg(test)]
 mod tests {
+    use std::vec;
+
     use super::*;
 
     macro_rules! test_lexer {
@@ -200,6 +207,24 @@ mod tests {
                 Token::Ident("a1".to_string()),
                 Token::Plus,
                 Token::Ident("a2".to_string())
+            ]
+        );
+    }
+
+    #[test]
+    fn lit_bool() {
+        test_lexer!("true", vec![Token::Lit(Lit::Bool(LitBool { value: true }))]);
+        test_lexer!(
+            "false",
+            vec![Token::Lit(Lit::Bool(LitBool { value: false }))]
+        );
+
+        test_lexer!(
+            "(true)",
+            vec![
+                Token::OpenParen,
+                Token::Lit(Lit::Bool(LitBool { value: true })),
+                Token::CloseParen,
             ]
         );
     }
