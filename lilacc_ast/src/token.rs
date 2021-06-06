@@ -5,14 +5,23 @@ pub enum Token {
 
     Ident(String),
 
+    Eq,
+    Lt,
+    Le,
     EqEq,
+    Ne,
+    Ge,
+    Gt,
     AndAnd,
     OrOr,
+    Not,
 
     Plus,
     Minus,
     Star,
     Slash,
+    And,
+    Or,
 
     OpenParen,
     CloseParen,
