@@ -1,3 +1,6 @@
+pub mod lit;
+pub mod token;
+
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub enum BinOp {
     Mul,

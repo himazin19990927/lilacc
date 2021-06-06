@@ -1,0 +1,13 @@
+use std::str::FromStr;
+use crate::ast::*;
+
+grammar;
+
+extern {
+    type Location = ();
+    type Error = ();
+
+    enum Token {
+        "num" => Token
+    }
+}

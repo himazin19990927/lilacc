@@ -1,5 +1,5 @@
 use core::panic;
-use lilacc_token::{Token, TokenKind};
+use lilacc_ast::{lit::*, token::*};
 use std::str::Chars;
 
 #[derive(Debug)]
@@ -42,22 +42,19 @@ impl<'input> Lexer<'input> {
             None => panic!("Entered string has already reached the end."),
         }
 
-        let mut lit = String::from(self.ch.unwrap());
+        let mut digits = String::from(self.ch.unwrap());
         loop {
             self.read_char();
             if let Some(c) = self.ch {
                 if c.is_digit(10) {
-                    lit.push(c);
+                    digits.push(c);
                     continue;
                 }
             }
             break;
         }
 
-        Token {
-            kind: TokenKind::Num,
-            literal: lit,
-        }
+        Token::Lit(Lit::Int(LitInt { digits }))
     }
 
     fn read_str(&mut self) -> String {
@@ -94,18 +91,18 @@ impl<'input> Lexer<'input> {
 
         let token = match self.ch {
             Some(ch) => Some(match ch {
-                '+' => Token::new(TokenKind::Plus, ch),
-                '-' => Token::new(TokenKind::Minus, ch),
-                '*' => Token::new(TokenKind::Star, ch),
-                '/' => Token::new(TokenKind::Slash, ch),
+                '+' => Token::Plus,
+                '-' => Token::Minus,
+                '*' => Token::Star,
+                '/' => Token::Slash,
 
-                '(' => Token::new(TokenKind::OpenParen, ch),
-                ')' => Token::new(TokenKind::CloseParen, ch),
+                '(' => Token::OpenParen,
+                ')' => Token::CloseParen,
 
                 '0'..='9' => return Some(self.read_number()),
                 _ => {
                     let literal = self.read_str();
-                    return Some(Token::new(TokenKind::Ident, literal));
+                    return Some(Token::Ident(literal));
                 }
             }),
             None => None,
@@ -114,6 +111,17 @@ impl<'input> Lexer<'input> {
         self.read_char();
 
         token
+    }
+}
+
+impl<'input> Iterator for Lexer<'input> {
+    type Item = (Token, (), ());
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match self.next_token() {
+            Some(token) => Some((token, (), ())),
+            None => None,
+        }
     }
 }
 
@@ -136,49 +144,62 @@ mod tests {
 
     #[test]
     fn num() {
-        test_lexer!("1", vec![Token::new(TokenKind::Num, "1"),]);
-        test_lexer!("10", vec![Token::new(TokenKind::Num, "10"),]);
+        test_lexer!(
+            "1",
+            vec![Token::Lit(Lit::Int(LitInt {
+                digits: "1".to_string()
+            }))]
+        );
+
+        test_lexer!(
+            "10",
+            vec![Token::Lit(Lit::Int(LitInt {
+                digits: "10".to_string()
+            }))]
+        );
 
         test_lexer!(
             "10+20",
             vec![
-                Token::new(TokenKind::Num, "10"),
-                Token::new(TokenKind::Plus, "+"),
-                Token::new(TokenKind::Num, "20"),
+                Token::Lit(Lit::Int(LitInt {
+                    digits: "10".to_string()
+                })),
+                Token::Plus,
+                Token::Lit(Lit::Int(LitInt {
+                    digits: "20".to_string()
+                })),
             ]
         );
     }
 
     #[test]
     fn paren() {
-        test_lexer!(
-            "()",
-            vec![
-                Token::new(TokenKind::OpenParen, "("),
-                Token::new(TokenKind::CloseParen, ")"),
-            ]
-        );
+        test_lexer!("()", vec![Token::OpenParen, Token::CloseParen,]);
 
         test_lexer!(
             "(1)",
             vec![
-                Token::new(TokenKind::OpenParen, "("),
-                Token::new(TokenKind::Num, "1"),
-                Token::new(TokenKind::CloseParen, ")"),
+                Token::OpenParen,
+                Token::Lit(Lit::Int(LitInt {
+                    digits: "1".to_string()
+                })),
+                Token::CloseParen,
             ]
         );
     }
 
     #[test]
     fn ident() {
-        test_lexer!("a", vec![Token::new(TokenKind::Ident, "a")]);
-        test_lexer!("ab", vec![Token::new(TokenKind::Ident, "ab")]);
+        test_lexer!("a", vec![Token::Ident("a".to_string())]);
+
+        test_lexer!("ab", vec![Token::Ident("ab".to_string())]);
+
         test_lexer!(
             "a1+a2",
             vec![
-                Token::new(TokenKind::Ident, "a1"),
-                Token::new(TokenKind::Plus, "+"),
-                Token::new(TokenKind::Ident, "a2")
+                Token::Ident("a1".to_string()),
+                Token::Plus,
+                Token::Ident("a2".to_string())
             ]
         );
     }
