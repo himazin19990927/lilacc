@@ -23,6 +23,10 @@ impl<'input> Lexer<'input> {
         self.ch = self.chars.next();
     }
 
+    fn peek_char(&self) -> Option<char> {
+        self.chars.clone().next()
+    }
+
     fn skip_whitespace(&mut self) {
         while let Some(c) = self.ch {
             if !c.is_whitespace() {
@@ -91,6 +95,28 @@ impl<'input> Lexer<'input> {
 
         let token = match self.ch {
             Some(ch) => Some(match ch {
+                '=' => match self.peek_char() {
+                    Some('=') => {
+                        self.read_char();
+                        Token::EqEq
+                    }
+                    _ => todo!(),
+                },
+                '&' => match self.peek_char() {
+                    Some('&') => {
+                        self.read_char();
+                        Token::AndAnd
+                    }
+                    _ => todo!(),
+                },
+                '|' => match self.peek_char() {
+                    Some('|') => {
+                        self.read_char();
+                        Token::OrOr
+                    }
+                    _ => todo!(),
+                },
+
                 '+' => Token::Plus,
                 '-' => Token::Minus,
                 '*' => Token::Star,
@@ -227,5 +253,12 @@ mod tests {
                 Token::CloseParen,
             ]
         );
+    }
+
+    #[test]
+    fn logic_op() {
+        test_lexer!("==", vec![Token::EqEq]);
+        test_lexer!("&&", vec![Token::AndAnd]);
+        test_lexer!("||", vec![Token::OrOr]);
     }
 }

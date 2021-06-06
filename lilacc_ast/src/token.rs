@@ -5,6 +5,10 @@ pub enum Token {
 
     Ident(String),
 
+    EqEq,
+    AndAnd,
+    OrOr,
+
     Plus,
     Minus,
     Star,
