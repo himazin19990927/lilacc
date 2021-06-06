@@ -1,13 +1,36 @@
-use std::str::FromStr;
-use crate::ast::*;
+use lilacc_ast::{token::*, lit::*, *};
 
 grammar;
+
+pub Expr: Expr = {
+    Unary,
+};
+
+Unary: Expr = {
+    "-" <p: Primary> => Expr::Unary(ExprUnary {op: UnOp::Neg, expr: Box::new(p)}),
+    Primary,
+}
+
+Primary: Expr = {
+    "Lit" => Expr::Lit(ExprLit {lit: <>}),
+    "(" <Expr> ")",
+};
 
 extern {
     type Location = ();
     type Error = ();
 
     enum Token {
-        "num" => Token
+        "Lit" => Token::Lit(<Lit>),
+
+        "Ident" => Token::Ident(<String>),
+
+        "+" => Token::Plus,
+        "-" => Token::Minus,
+        "*" => Token::Star,
+        "/" => Token::Slash,
+
+        "(" => Token::OpenParen,
+        ")" => Token::CloseParen,
     }
 }

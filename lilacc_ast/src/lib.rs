@@ -1,6 +1,8 @@
 pub mod lit;
 pub mod token;
 
+use lit::Lit;
+
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub enum BinOp {
     Mul,
@@ -28,6 +30,8 @@ pub enum UnOp {
 pub enum Expr {
     Binary(ExprBinary),
     Unary(ExprUnary),
+
+    Lit(ExprLit),
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -41,4 +45,9 @@ pub struct ExprBinary {
 pub struct ExprUnary {
     pub op: UnOp,
     pub expr: Box<Expr>,
+}
+
+#[derive(Debug, PartialEq, Clone)]
+pub struct ExprLit {
+    pub lit: Lit,
 }

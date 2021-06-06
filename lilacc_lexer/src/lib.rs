@@ -120,11 +120,11 @@ impl<'input> Lexer<'input> {
 }
 
 impl<'input> Iterator for Lexer<'input> {
-    type Item = (Token, (), ());
+    type Item = ((), Token, ());
 
     fn next(&mut self) -> Option<Self::Item> {
         match self.next_token() {
-            Some(token) => Some((token, (), ())),
+            Some(token) => Some(((), token, ())),
             None => None,
         }
     }
