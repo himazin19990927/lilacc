@@ -57,4 +57,39 @@ mod tests {
     fn test_unary() {
         test_expr!("-10", expr_unary!(UnOp::Neg, expr_int!(10)));
     }
+
+    #[test]
+    fn test_binary() {
+        test_expr!("1+2", expr_binary!(expr_int!(1), BinOp::Add, expr_int!(2)));
+        test_expr!("1-2", expr_binary!(expr_int!(1), BinOp::Sub, expr_int!(2)));
+        test_expr!("1*2", expr_binary!(expr_int!(1), BinOp::Mul, expr_int!(2)));
+        test_expr!("1/2", expr_binary!(expr_int!(1), BinOp::Div, expr_int!(2)));
+
+        test_expr!(
+            "1+2+3",
+            expr_binary!(
+                expr_binary!(expr_int!(1), BinOp::Add, expr_int!(2)),
+                BinOp::Add,
+                expr_int!(3)
+            )
+        );
+
+        test_expr!(
+            "1+2*3",
+            expr_binary!(
+                expr_int!(1),
+                BinOp::Add,
+                expr_binary!(expr_int!(2), BinOp::Mul, expr_int!(3))
+            )
+        );
+
+        test_expr!(
+            "(1+2)*3",
+            expr_binary!(
+                expr_binary!(expr_int!(1), BinOp::Add, expr_int!(2)),
+                BinOp::Mul,
+                expr_int!(3)
+            )
+        );
+    }
 }

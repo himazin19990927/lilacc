@@ -3,6 +3,18 @@ use lilacc_ast::{token::*, lit::*, *};
 grammar;
 
 pub Expr: Expr = {
+    Add,
+};
+
+Add: Expr = {
+    <lhs: Add> "+" < rhs: Mul> => Expr::Binary(ExprBinary {left: Box::new(lhs), op: BinOp::Add, right: Box::new(rhs)}),
+    <lhs: Add> "-" < rhs: Mul> => Expr::Binary(ExprBinary {left: Box::new(lhs), op: BinOp::Sub, right: Box::new(rhs)}),
+    Mul,
+};
+
+Mul: Expr = {
+    <lhs: Mul> "*" < rhs: Unary> => Expr::Binary(ExprBinary {left: Box::new(lhs), op: BinOp::Mul, right: Box::new(rhs)}),
+    <lhs: Mul> "/" < rhs: Unary> => Expr::Binary(ExprBinary {left: Box::new(lhs), op: BinOp::Div, right: Box::new(rhs)}),
     Unary,
 };
 
