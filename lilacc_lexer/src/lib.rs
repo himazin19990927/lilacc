@@ -189,6 +189,12 @@ mod tests {
         };
     }
 
+    macro_rules! token_ident {
+        ($value: expr) => {
+            Token::Ident($value.to_string())
+        };
+    }
+
     #[test]
     fn num() {
         test_lexer!("1", vec![token_int!(1)]);
@@ -210,17 +216,13 @@ mod tests {
 
     #[test]
     fn ident() {
-        test_lexer!("a", vec![Token::Ident("a".to_string())]);
+        test_lexer!("a", vec![token_ident!("a")]);
 
-        test_lexer!("ab", vec![Token::Ident("ab".to_string())]);
+        test_lexer!("ab", vec![token_ident!("ab")]);
 
         test_lexer!(
             "a1+a2",
-            vec![
-                Token::Ident("a1".to_string()),
-                Token::Plus,
-                Token::Ident("a2".to_string())
-            ]
+            vec![token_ident!("a1"), Token::Plus, token_ident!("a2")]
         );
     }
 
