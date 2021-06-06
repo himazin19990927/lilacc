@@ -17,39 +17,44 @@ mod tests {
         };
     }
 
+    macro_rules! expr_int {
+        ($value: expr) => {
+            Expr::Lit(ExprLit {
+                lit: Lit::Int(LitInt {
+                    digits: $value.to_string(),
+                }),
+            })
+        };
+    }
+
+    macro_rules! expr_binary {
+        ($left: expr, $op: expr, $right: expr) => {
+            Expr::Binary(ExprBinary {
+                left: Box::new($left),
+                op: $op,
+                right: Box::new($right),
+            })
+        };
+    }
+
+    macro_rules! expr_unary {
+        ($op: expr, $expr: expr) => {
+            Expr::Unary(ExprUnary {
+                op: $op,
+                expr: Box::new($expr),
+            })
+        };
+    }
+
     #[test]
     fn test_primary() {
-        test_expr!(
-            "10",
-            Expr::Lit(ExprLit {
-                lit: Lit::Int(LitInt {
-                    digits: "10".to_string(),
-                }),
-            })
-        );
+        test_expr!("10", expr_int!(10));
 
-        test_expr!(
-            "(10)",
-            Expr::Lit(ExprLit {
-                lit: Lit::Int(LitInt {
-                    digits: "10".to_string(),
-                }),
-            })
-        );
+        test_expr!("(10)", expr_int!(10));
     }
 
     #[test]
     fn test_unary() {
-        test_expr!(
-            "-10",
-            Expr::Unary(ExprUnary {
-                op: UnOp::Neg,
-                expr: Box::new(Expr::Lit(ExprLit {
-                    lit: Lit::Int(LitInt {
-                        digits: "10".to_string(),
-                    }),
-                }))
-            })
-        );
+        test_expr!("-10", expr_unary!(UnOp::Neg, expr_int!(10)));
     }
 }
