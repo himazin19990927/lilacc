@@ -32,6 +32,7 @@ pub enum Expr {
     Unary(ExprUnary),
 
     Lit(ExprLit),
+    Ident(ExprIdent),
 }
 
 #[derive(Debug, PartialEq, Clone)]
@@ -50,4 +51,9 @@ pub struct ExprUnary {
 #[derive(Debug, PartialEq, Clone)]
 pub struct ExprLit {
     pub lit: Lit,
+}
+
+#[derive(Debug, PartialEq, Clone)]
+pub struct ExprIdent {
+    pub name: String,
 }

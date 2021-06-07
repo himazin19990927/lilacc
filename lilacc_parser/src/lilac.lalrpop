@@ -25,6 +25,7 @@ Unary: Expr = {
 
 Primary: Expr = {
     "Lit" => Expr::Lit(ExprLit {lit: <>}),
+    "Ident" => Expr::Ident(ExprIdent {name: <>}),
     "(" <Expr> ")",
 };
 

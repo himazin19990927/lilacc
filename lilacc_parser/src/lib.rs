@@ -27,6 +27,14 @@ mod tests {
         };
     }
 
+    macro_rules! expr_ident {
+        ($value: expr) => {
+            Expr::Ident(ExprIdent {
+                name: $value.to_string(),
+            })
+        };
+    }
+
     macro_rules! expr_binary {
         ($left: expr, $op: expr, $right: expr) => {
             Expr::Binary(ExprBinary {
@@ -49,13 +57,18 @@ mod tests {
     #[test]
     fn test_primary() {
         test_expr!("10", expr_int!(10));
+        test_expr!("a", expr_ident!("a"));
+        test_expr!("hoge", expr_ident!("hoge"));
 
         test_expr!("(10)", expr_int!(10));
+        test_expr!("(a)", expr_ident!("a"));
+        test_expr!("(hoge)", expr_ident!("hoge"));
     }
 
     #[test]
     fn test_unary() {
         test_expr!("-10", expr_unary!(UnOp::Neg, expr_int!(10)));
+        test_expr!("-x", expr_unary!(UnOp::Neg, expr_ident!("x")));
     }
 
     #[test]
