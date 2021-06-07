@@ -3,6 +3,14 @@ use lilacc_ast::{token::*, lit::*, *};
 grammar;
 
 pub Expr: Expr = {
+    Relational,
+};
+
+Relational: Expr = {
+    <lhs: Add> "<" <rhs: Add> => Expr::Binary(ExprBinary {left: Box::new(lhs), op: BinOp::Lt, right: Box::new(rhs)}),
+    <lhs: Add> "<=" <rhs: Add> => Expr::Binary(ExprBinary {left: Box::new(lhs), op: BinOp::Le, right: Box::new(rhs)}),
+    <lhs: Add> ">" <rhs: Add> => Expr::Binary(ExprBinary {left: Box::new(rhs), op: BinOp::Lt, right: Box::new(lhs)}),
+    <lhs: Add> ">=" <rhs: Add> => Expr::Binary(ExprBinary {left: Box::new(rhs), op: BinOp::Le, right: Box::new(lhs)}),
     Add,
 };
 
@@ -37,6 +45,17 @@ extern {
         "Lit" => Token::Lit(<Lit>),
 
         "Ident" => Token::Ident(<String>),
+
+        "=" => Token::Eq,
+        "<" => Token::Lt,
+        "<=" => Token::Le,
+        "==" => Token::EqEq,
+        "!=" => Token::Ne,
+        ">=" => Token::Ge,
+        ">" => Token::Gt,
+        "&&" => Token::AndAnd,
+        "||" => Token::OrOr,
+        "!" => Token::Not,
 
         "+" => Token::Plus,
         "-" => Token::Minus,

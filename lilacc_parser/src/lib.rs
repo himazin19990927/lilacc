@@ -105,4 +105,27 @@ mod tests {
             )
         );
     }
+
+    #[test]
+    fn test_binary_relational() {
+        test_expr!(
+            "a<b",
+            expr_binary!(expr_ident!("a"), BinOp::Lt, expr_ident!("b"))
+        );
+
+        test_expr!(
+            "a<=b",
+            expr_binary!(expr_ident!("a"), BinOp::Le, expr_ident!("b"))
+        );
+
+        test_expr!(
+            "a>b",
+            expr_binary!(expr_ident!("b"), BinOp::Lt, expr_ident!("a"))
+        );
+
+        test_expr!(
+            "a>=b",
+            expr_binary!(expr_ident!("b"), BinOp::Le, expr_ident!("a"))
+        );
+    }
 }
