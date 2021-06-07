@@ -119,6 +119,16 @@ mod tests {
         );
 
         test_expr!(
+            "a==b",
+            expr_binary!(expr_ident!("a"), BinOp::Eq, expr_ident!("b"))
+        );
+
+        test_expr!(
+            "a!=b",
+            expr_binary!(expr_ident!("a"), BinOp::Ne, expr_ident!("b"))
+        );
+
+        test_expr!(
             "a>b",
             expr_binary!(expr_ident!("b"), BinOp::Lt, expr_ident!("a"))
         );
