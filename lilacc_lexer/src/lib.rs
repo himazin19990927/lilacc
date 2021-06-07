@@ -100,21 +100,46 @@ impl<'input> Lexer<'input> {
                         self.read_char();
                         Token::EqEq
                     }
-                    _ => todo!(),
+                    _ => Token::Eq,
                 },
+
+                '<' => match self.peek_char() {
+                    Some('=') => {
+                        self.read_char();
+                        Token::Le
+                    }
+                    _ => Token::Lt,
+                },
+
+                '>' => match self.peek_char() {
+                    Some('=') => {
+                        self.read_char();
+                        Token::Ge
+                    }
+                    _ => Token::Gt,
+                },
+
+                '!' => match self.peek_char() {
+                    Some('=') => {
+                        self.read_char();
+                        Token::Ne
+                    }
+                    _ => Token::Not,
+                },
+
                 '&' => match self.peek_char() {
                     Some('&') => {
                         self.read_char();
                         Token::AndAnd
                     }
-                    _ => todo!(),
+                    _ => Token::And,
                 },
                 '|' => match self.peek_char() {
                     Some('|') => {
                         self.read_char();
                         Token::OrOr
                     }
-                    _ => todo!(),
+                    _ => Token::Or,
                 },
 
                 '+' => Token::Plus,
@@ -239,14 +264,9 @@ mod tests {
 
     #[test]
     fn logic_op() {
-        test_lexer!("==", vec![Token::EqEq]);
         test_lexer!("&&", vec![Token::AndAnd]);
         test_lexer!("||", vec![Token::OrOr]);
-
-        test_lexer!(
-            "true==false",
-            vec![token_bool!(true), Token::EqEq, token_bool!(false)]
-        );
+        test_lexer!("!", vec![Token::Not]);
 
         test_lexer!(
             "true&&false",
@@ -257,5 +277,29 @@ mod tests {
             "true||false",
             vec![token_bool!(true), Token::OrOr, token_bool!(false)]
         );
+
+        test_lexer!("!true", vec![Token::Not, token_bool!(true)]);
+    }
+
+    #[test]
+    fn relational_op() {
+        test_lexer!("<", vec![Token::Lt]);
+        test_lexer!("<=", vec![Token::Le]);
+        test_lexer!("==", vec![Token::EqEq]);
+        test_lexer!("!=", vec![Token::Ne]);
+        test_lexer!(">=", vec![Token::Ge]);
+        test_lexer!(">", vec![Token::Gt]);
+
+        test_lexer!("1<2", vec![token_int!(1), Token::Lt, token_int!(2)]);
+
+        test_lexer!("1<=2", vec![token_int!(1), Token::Le, token_int!(2)]);
+
+        test_lexer!("1==2", vec![token_int!(1), Token::EqEq, token_int!(2)]);
+
+        test_lexer!("1!=2", vec![token_int!(1), Token::Ne, token_int!(2)]);
+
+        test_lexer!("1>=2", vec![token_int!(1), Token::Ge, token_int!(2)]);
+
+        test_lexer!("1>2", vec![token_int!(1), Token::Gt, token_int!(2)]);
     }
 }
