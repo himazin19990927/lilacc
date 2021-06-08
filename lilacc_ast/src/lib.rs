@@ -29,7 +29,6 @@ pub enum BinOp {
     /// The `!=` operator (not equal to)
     Ne,
 
-
     /// The `&&` operator (logical and)
     And,
 
@@ -50,7 +49,6 @@ pub enum Expr {
 
     /// A unary operation: `-x`
     Unary(ExprUnary),
-
 
     /// A literal in place of an expression: `1`, `true`
     Lit(ExprLit),
