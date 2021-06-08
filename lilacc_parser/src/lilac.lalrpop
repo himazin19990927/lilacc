@@ -50,6 +50,7 @@ pub Expr: Expr = {
 };
 
 pub Stmt: Stmt = {
+    "let" <ident: "Ident"> "=" <init: Expr> ";" => Stmt::Local(Local {ident: ExprIdent{ name: ident}, init: init}),
     <expr: Expr> => Stmt::Expr(expr),
     <expr: Expr> ";" => Stmt::Semi(expr),
 }
@@ -82,6 +83,8 @@ extern {
         "(" => Token::OpenParen,
         ")" => Token::CloseParen,
 
-        ";" => Token::Semi
+        ";" => Token::Semi,
+
+        "let" => Token::Let,
     }
 }
