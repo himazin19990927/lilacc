@@ -5,13 +5,22 @@ lalrpop_mod!(pub lilac);
 #[cfg(test)]
 mod tests {
     use super::*;
-    use lilacc_ast::{expr::*, lit::*, op::*};
+    use lilacc_ast::{expr::*, lit::*, op::*, stmt::Stmt};
     use lilacc_lexer::Lexer;
 
     macro_rules! test_expr {
         ($input: expr, $expected: expr) => {
             let lexer = Lexer::new($input);
             let result = lilac::ExprParser::new().parse(lexer).unwrap();
+
+            assert_eq!($expected, result);
+        };
+    }
+
+    macro_rules! test_stmt {
+        ($input: expr, $expected: expr) => {
+            let lexer = Lexer::new($input);
+            let result = lilac::StmtParser::new().parse(lexer).unwrap();
 
             assert_eq!($expected, result);
         };
@@ -167,6 +176,19 @@ mod tests {
                 BinOp::Or,
                 expr_binary!(expr_ident!("b"), BinOp::And, expr_ident!("c"))
             )
+        );
+    }
+
+    #[test]
+    fn test_stmt() {
+        test_stmt!(
+            "a+b",
+            Stmt::Expr(expr_binary!(expr_ident!("a"), BinOp::Add, expr_ident!("b")))
+        );
+
+        test_stmt!(
+            "a+b;",
+            Stmt::Semi(expr_binary!(expr_ident!("a"), BinOp::Add, expr_ident!("b")))
         );
     }
 }

@@ -1,4 +1,4 @@
-use lilacc_ast::{expr::*, lit::*, op::*, token::*};
+use lilacc_ast::{expr::*, lit::*, op::*, stmt::*, token::*};
 
 grammar;
 
@@ -49,6 +49,11 @@ pub Expr: Expr = {
     Or,
 };
 
+pub Stmt: Stmt = {
+    <expr: Expr> => Stmt::Expr(expr),
+    <expr: Expr> ";" => Stmt::Semi(expr),
+}
+
 extern {
     type Location = ();
     type Error = ();
@@ -76,5 +81,7 @@ extern {
 
         "(" => Token::OpenParen,
         ")" => Token::CloseParen,
+
+        ";" => Token::Semi
     }
 }
