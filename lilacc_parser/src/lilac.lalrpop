@@ -1,4 +1,4 @@
-use lilacc_ast::{token::*, lit::*, *};
+use lilacc_ast::{expr::*, lit::*, op::*, token::*};
 
 grammar;
 

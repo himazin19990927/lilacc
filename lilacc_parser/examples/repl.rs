@@ -1,4 +1,4 @@
-use lilacc_ast::*;
+use lilacc_ast::expr::Expr;
 use lilacc_lexer::Lexer;
 use lilacc_parser::lilac;
 use std::io::{stdout, Write};

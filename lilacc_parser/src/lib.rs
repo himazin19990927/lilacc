@@ -5,7 +5,7 @@ lalrpop_mod!(pub lilac);
 #[cfg(test)]
 mod tests {
     use super::*;
-    use lilacc_ast::{lit::*, *};
+    use lilacc_ast::{expr::*, lit::*, op::*};
     use lilacc_lexer::Lexer;
 
     macro_rules! test_expr {
