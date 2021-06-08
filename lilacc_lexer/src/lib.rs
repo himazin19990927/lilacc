@@ -157,6 +157,7 @@ impl<'input> Lexer<'input> {
                     let token = match self.read_str().as_str() {
                         "true" => Token::Lit(Lit::Bool(LitBool { value: true })),
                         "false" => Token::Lit(Lit::Bool(LitBool { value: false })),
+                        "let" => Token::Let,
                         ident => Token::Ident(ident.to_string()),
                     };
 
@@ -246,6 +247,22 @@ mod tests {
         test_lexer!(";", vec![Token::Semi]);
 
         test_lexer!("a;", vec![token_ident!("a"), Token::Semi]);
+    }
+
+    #[test]
+    fn keyword() {
+        test_lexer!("let", vec![Token::Let]);
+
+        test_lexer!(
+            "let x = 0;",
+            vec![
+                Token::Let,
+                token_ident!("x"),
+                Token::Eq,
+                token_int!(0),
+                Token::Semi
+            ]
+        );
     }
 
     #[test]
