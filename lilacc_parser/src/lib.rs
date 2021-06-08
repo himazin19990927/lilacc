@@ -138,4 +138,35 @@ mod tests {
             expr_binary!(expr_ident!("b"), BinOp::Le, expr_ident!("a"))
         );
     }
+
+    #[test]
+    fn test_binary_logical() {
+        test_expr!(
+            "a&&b",
+            expr_binary!(expr_ident!("a"), BinOp::And, expr_ident!("b"))
+        );
+
+        test_expr!(
+            "a||b",
+            expr_binary!(expr_ident!("a"), BinOp::Or, expr_ident!("b"))
+        );
+
+        test_expr!(
+            "a&&b||c",
+            expr_binary!(
+                expr_binary!(expr_ident!("a"), BinOp::And, expr_ident!("b")),
+                BinOp::Or,
+                expr_ident!("c")
+            )
+        );
+
+        test_expr!(
+            "a||b&&c",
+            expr_binary!(
+                expr_ident!("a"),
+                BinOp::Or,
+                expr_binary!(expr_ident!("b"), BinOp::And, expr_ident!("c"))
+            )
+        );
+    }
 }

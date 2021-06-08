@@ -35,8 +35,18 @@ Relational: Expr = {
     Add,
 };
 
-pub Expr: Expr = {
+And: Expr = {
+    <lhs: And> "&&" <rhs: Relational> => Expr::Binary(ExprBinary {left: Box::new(lhs), op: BinOp::And, right: Box::new(rhs)}),
     Relational,
+}
+
+Or: Expr = {
+    <lhs: Or> "||" <rhs: And> => Expr::Binary(ExprBinary {left: Box::new(lhs), op: BinOp::Or, right: Box::new(rhs)}),
+    And,
+}
+
+pub Expr: Expr = {
+    Or,
 };
 
 extern {
