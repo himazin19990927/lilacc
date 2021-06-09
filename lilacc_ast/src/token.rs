@@ -61,6 +61,21 @@ pub enum Token {
     /// The `)` token
     CloseParen,
 
+    /// The `[` token
+    OpenBracket,
+
+    /// The `]` token
+    CloseBracket,
+
+    /// The `{` token
+    OpenBrace,
+
+    /// The `}` token
+    CloseBrace,
+
+    /// The '.' token
+    Dot,
+
     /// The `,` token
     Comma,
 
