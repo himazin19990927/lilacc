@@ -12,7 +12,7 @@ macro_rules! test_expr {
 }
 
 #[test]
-fn test_primary() {
+fn parse_primary() {
     test_expr!("10", expr_int!(10));
     test_expr!("a", expr_ident!("a"));
     test_expr!("hoge", expr_ident!("hoge"));
@@ -23,13 +23,13 @@ fn test_primary() {
 }
 
 #[test]
-fn test_unary() {
+fn parse_unary() {
     test_expr!("-10", expr_unary!(UnOp::Neg, expr_int!(10)));
     test_expr!("-x", expr_unary!(UnOp::Neg, expr_ident!("x")));
 }
 
 #[test]
-fn test_binary() {
+fn parse_binary() {
     test_expr!("1+2", expr_binary!(expr_int!(1), BinOp::Add, expr_int!(2)));
     test_expr!("1-2", expr_binary!(expr_int!(1), BinOp::Sub, expr_int!(2)));
     test_expr!("1*2", expr_binary!(expr_int!(1), BinOp::Mul, expr_int!(2)));
@@ -64,7 +64,7 @@ fn test_binary() {
 }
 
 #[test]
-fn test_binary_relational() {
+fn parse_binary_relational() {
     test_expr!(
         "a<b",
         expr_binary!(expr_ident!("a"), BinOp::Lt, expr_ident!("b"))
@@ -97,7 +97,7 @@ fn test_binary_relational() {
 }
 
 #[test]
-fn test_binary_logical() {
+fn parse_binary_logical() {
     test_expr!(
         "a&&b",
         expr_binary!(expr_ident!("a"), BinOp::And, expr_ident!("b"))

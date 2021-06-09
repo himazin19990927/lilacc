@@ -12,7 +12,7 @@ macro_rules! test_stmt {
 }
 
 #[test]
-fn test_stmt() {
+fn parse_stmt() {
     test_stmt!(
         "let x = 0;",
         Stmt::Local(Local {
