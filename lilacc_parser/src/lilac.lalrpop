@@ -49,7 +49,7 @@ pub Expr: Expr = {
     Or,
 };
 
-Type: Type = {
+pub Type: Type = {
     "Ident" => Type::Ident(TypeIdent{name: <>}),
 };
 
