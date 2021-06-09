@@ -159,7 +159,12 @@ impl<'input> Lexer<'input> {
 
                 '(' => Token::OpenParen,
                 ')' => Token::CloseParen,
+                '[' => Token::OpenBracket,
+                ']' => Token::CloseBracket,
+                '{' => Token::OpenBrace,
+                '}' => Token::CloseBrace,
 
+                '.' => Token::Dot,
                 ',' => Token::Comma,
                 ';' => Token::Semi,
                 ':' => Token::Colon,
@@ -253,6 +258,29 @@ mod tests {
         test_lexer!(
             "(1)",
             vec![Token::OpenParen, token_int!(1), Token::CloseParen,]
+        );
+
+        test_lexer!("[]", vec![Token::OpenBracket, Token::CloseBracket,]);
+
+        test_lexer!(
+            "[1]",
+            vec![Token::OpenBracket, token_int!(1), Token::CloseBracket,]
+        );
+
+        test_lexer!("{}", vec![Token::OpenBrace, Token::CloseBrace,]);
+
+        test_lexer!(
+            "{1}",
+            vec![Token::OpenBrace, token_int!(1), Token::CloseBrace,]
+        );
+    }
+
+    #[test]
+    fn dot() {
+        test_lexer!(".", vec![Token::Dot]);
+        test_lexer!(
+            "a.b",
+            vec![token_ident!("a"), Token::Dot, token_ident!("b")]
         );
     }
 
