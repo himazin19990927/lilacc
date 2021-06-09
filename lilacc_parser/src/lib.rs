@@ -5,7 +5,7 @@ lalrpop_mod!(pub lilac);
 #[cfg(test)]
 mod tests {
     use super::*;
-    use lilacc_ast::{expr::*, lit::*, op::*, stmt::*};
+    use lilacc_ast::{expr::*, lit::*, op::*, pat::*, stmt::*};
     use lilacc_lexer::Lexer;
 
     macro_rules! test_expr {
@@ -184,9 +184,9 @@ mod tests {
         test_stmt!(
             "let x = 0;",
             Stmt::Local(Local {
-                ident: ExprIdent {
-                    name: "x".to_string()
-                },
+                pat: Pat::Ident(PatIdent {
+                    ident: "x".to_string()
+                }),
                 init: expr_int!(0)
             })
         );

@@ -151,6 +151,7 @@ impl<'input> Lexer<'input> {
                 ')' => Token::CloseParen,
 
                 ';' => Token::Semi,
+                ':' => Token::Colon,
 
                 '0'..='9' => return Some(self.read_number()),
                 _ => {
@@ -245,8 +246,13 @@ mod tests {
     #[test]
     fn semi() {
         test_lexer!(";", vec![Token::Semi]);
-
         test_lexer!("a;", vec![token_ident!("a"), Token::Semi]);
+
+        test_lexer!(":", vec![Token::Colon]);
+        test_lexer!(
+            "a:b",
+            vec![token_ident!("a"), Token::Colon, token_ident!("b")]
+        );
     }
 
     #[test]

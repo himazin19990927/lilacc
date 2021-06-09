@@ -64,6 +64,9 @@ pub enum Token {
     /// The `;` token
     Semi,
 
+    /// The `:` token
+    Colon,
+
     /// The `let` token
     Let,
 }

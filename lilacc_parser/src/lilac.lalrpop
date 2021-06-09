@@ -1,4 +1,4 @@
-use lilacc_ast::{expr::*, lit::*, op::*, stmt::*, token::*};
+use lilacc_ast::{expr::*, lit::*, op::*, pat::*, stmt::*, token::*, ty::*};
 
 grammar;
 
@@ -49,8 +49,17 @@ pub Expr: Expr = {
     Or,
 };
 
+Type: Type = {
+    "Ident" => Type::Ident(TypeIdent{name: <>}),
+};
+
+Pat: Pat = {
+    "Ident" => Pat::Ident(PatIdent{ident: <>}),
+    <pat: Pat> ":" <ty: Type> => Pat::Type(PatType{pat: Box::new(pat), ty: Box::new(ty)}),
+};
+
 pub Stmt: Stmt = {
-    "let" <ident: "Ident"> "=" <init: Expr> ";" => Stmt::Local(Local {ident: ExprIdent{ name: ident}, init: init}),
+    "let" <pat: Pat> "=" <init: Expr> ";" => Stmt::Local(Local {pat: pat, init: init}),
     <expr: Expr> => Stmt::Expr(expr),
     <expr: Expr> ";" => Stmt::Semi(expr),
 }
@@ -84,6 +93,7 @@ extern {
         ")" => Token::CloseParen,
 
         ";" => Token::Semi,
+        ":" => Token::Colon,
 
         "let" => Token::Let,
     }

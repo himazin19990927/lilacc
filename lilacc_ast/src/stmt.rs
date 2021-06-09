@@ -1,4 +1,4 @@
-use crate::expr::*;
+use crate::{expr::*, pat::Pat};
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum Stmt {
@@ -14,6 +14,6 @@ pub enum Stmt {
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Local {
-    pub ident: ExprIdent,
+    pub pat: Pat,
     pub init: Expr,
 }
