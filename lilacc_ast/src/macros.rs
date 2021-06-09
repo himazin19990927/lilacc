@@ -40,6 +40,24 @@ macro_rules! expr_unary {
 }
 
 #[macro_export]
+macro_rules! expr_block {
+    ( $( $stmt: expr),* ) => {
+        {
+            let mut stmts = Vec::new();
+            $(
+                stmts.push($x);
+            )*
+
+            Expr::Block(ExprBlock {
+                block: Box::new(Block {
+                        stmts: stmts,
+                })
+            })
+        }
+    }
+}
+
+#[macro_export]
 macro_rules! type_ident {
     ($ident: expr) => {
         Type::Ident(TypeIdent {
