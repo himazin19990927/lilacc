@@ -108,6 +108,10 @@ impl<'input> Lexer<'input> {
                         self.read_char();
                         Token::Le
                     }
+                    Some('-') => {
+                        self.read_char();
+                        Token::LArrow
+                    }
                     _ => Token::Lt,
                 },
 
@@ -143,7 +147,13 @@ impl<'input> Lexer<'input> {
                 },
 
                 '+' => Token::Plus,
-                '-' => Token::Minus,
+                '-' => match self.peek_char() {
+                    Some('>') => {
+                        self.read_char();
+                        Token::RArrow
+                    }
+                    _ => Token::Minus,
+                },
                 '*' => Token::Star,
                 '/' => Token::Slash,
 
@@ -252,6 +262,22 @@ mod tests {
         test_lexer!(
             "a:b",
             vec![token_ident!("a"), Token::Colon, token_ident!("b")]
+        );
+    }
+
+    #[test]
+    fn arrow() {
+        test_lexer!("->", vec![Token::RArrow]);
+        test_lexer!("<-", vec![Token::LArrow]);
+
+        test_lexer!(
+            "a->b",
+            vec![token_ident!("a"), Token::RArrow, token_ident!("b")]
+        );
+
+        test_lexer!(
+            "a<-b",
+            vec![token_ident!("a"), Token::LArrow, token_ident!("b")]
         );
     }
 
