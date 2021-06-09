@@ -169,6 +169,8 @@ impl<'input> Lexer<'input> {
                         "true" => Token::Lit(Lit::Bool(LitBool { value: true })),
                         "false" => Token::Lit(Lit::Bool(LitBool { value: false })),
                         "let" => Token::Let,
+                        "fn" => Token::Fn,
+                        "return" => Token::Return,
                         ident => Token::Ident(ident.to_string()),
                     };
 
@@ -295,6 +297,9 @@ mod tests {
                 Token::Semi
             ]
         );
+
+        test_lexer!("fn", vec![Token::Fn]);
+        test_lexer!("return", vec![Token::Return]);
     }
 
     #[test]
