@@ -67,6 +67,12 @@ pub enum Token {
     /// The `:` token
     Colon,
 
+    /// The `->` token
+    RArrow,
+
+    /// The `<-` token
+    LArrow,
+
     /// The `let` token
     Let,
 }
