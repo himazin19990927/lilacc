@@ -75,4 +75,10 @@ pub enum Token {
 
     /// The `let` token
     Let,
+
+    /// The `fn` token
+    Fn,
+
+    /// The `return` token
+    Return,
 }
