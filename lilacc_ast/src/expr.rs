@@ -1,4 +1,4 @@
-use crate::{lit::Lit, op::*};
+use crate::{block::*, lit::Lit, op::*};
 
 #[derive(Debug, PartialEq, Clone)]
 pub enum Expr {
@@ -7,6 +7,9 @@ pub enum Expr {
 
     /// A unary operation: `-x`
     Unary(ExprUnary),
+
+    /// A blocked scope: `{ ... }`
+    Block(ExprBlock),
 
     /// A literal in place of an expression: `1`, `true`
     Lit(ExprLit),
@@ -26,6 +29,11 @@ pub struct ExprBinary {
 pub struct ExprUnary {
     pub op: UnOp,
     pub expr: Box<Expr>,
+}
+
+#[derive(Debug, PartialEq, Clone)]
+pub struct ExprBlock {
+    pub block: Box<Block>,
 }
 
 #[derive(Debug, PartialEq, Clone)]
