@@ -38,3 +38,31 @@ macro_rules! expr_unary {
         })
     };
 }
+
+#[macro_export]
+macro_rules! type_ident {
+    ($ident: expr) => {
+        Type::Ident(TypeIdent {
+            name: $ident.to_string(),
+        })
+    };
+}
+
+#[macro_export]
+macro_rules! pat_ident {
+    ($ident: expr) => {
+        Pat::Ident(PatIdent {
+            ident: $ident.to_string(),
+        })
+    };
+}
+
+#[macro_export]
+macro_rules! pat_type {
+    ($pat: expr, $ty: expr) => {
+        Pat::Type(PatType {
+            pat: Box::new($pat),
+            ty: Box::new($ty),
+        })
+    };
+}

@@ -16,28 +16,15 @@ fn parse_local() {
     test_stmt!(
         "let x = 0;",
         Stmt::Local(Local {
-            pat: Pat::Ident(PatIdent {
-                ident: "x".to_string()
-            }),
+            pat: pat_ident!("x"),
             init: expr_int!(0)
         })
     );
 
-    let pt = PatType {
-        pat: Box::new(Pat::Ident(PatIdent {
-            ident: "x".to_string(),
-        })),
-        ty: Box::new(Type::Ident(TypeIdent {
-            name: "i32".to_string(),
-        })),
-    };
-
-    let pat = Pat::Type(pt);
-
     test_stmt!(
         "let x: i32 = 0;",
         Stmt::Local(Local {
-            pat: pat,
+            pat: pat_type!(pat_ident!("x"), type_ident!("i32")),
             init: expr_int!(0)
         })
     );
