@@ -61,6 +61,9 @@ pub enum Token {
     /// The `)` token
     CloseParen,
 
+    /// The `,` token
+    Comma,
+
     /// The `;` token
     Semi,
 
