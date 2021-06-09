@@ -160,6 +160,7 @@ impl<'input> Lexer<'input> {
                 '(' => Token::OpenParen,
                 ')' => Token::CloseParen,
 
+                ',' => Token::Comma,
                 ';' => Token::Semi,
                 ':' => Token::Colon,
 
@@ -252,6 +253,25 @@ mod tests {
         test_lexer!(
             "(1)",
             vec![Token::OpenParen, token_int!(1), Token::CloseParen,]
+        );
+    }
+
+    #[test]
+    fn comma() {
+        test_lexer!(",", vec![Token::Comma]);
+        test_lexer!(
+            "a,b",
+            vec![token_ident!("a"), Token::Comma, token_ident!("b")]
+        );
+        test_lexer!(
+            "(a, b)",
+            vec![
+                Token::OpenParen,
+                token_ident!("a"),
+                Token::Comma,
+                token_ident!("b"),
+                Token::CloseParen,
+            ]
         );
     }
 
