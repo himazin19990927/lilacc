@@ -60,7 +60,6 @@ pub Pat: Pat = {
 
 pub Stmt: Stmt = {
     "let" <pat: Pat> "=" <init: Expr> ";" => Stmt::Local(Local {pat: pat, init: init}),
-    <expr: Expr> => Stmt::Expr(expr),
     <expr: Expr> ";" => Stmt::Semi(expr),
 }
 

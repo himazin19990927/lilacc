@@ -31,14 +31,6 @@ fn parse_local() {
 }
 
 #[test]
-fn parse_expr() {
-    test_stmt!(
-        "a+b",
-        Stmt::Expr(expr_binary!(expr_ident!("a"), BinOp::Add, expr_ident!("b")))
-    );
-}
-
-#[test]
 fn parse_semi() {
     test_stmt!(
         "a+b;",

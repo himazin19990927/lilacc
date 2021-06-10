@@ -5,9 +5,6 @@ pub enum Stmt {
     /// A local binding: `let x;`, `let v = 10;`
     Local(Local),
 
-    /// An expression without `;`: `a + b`, `true`
-    Expr(Expr),
-
     /// An expression with `;`: `a + b;`, `a = 10;`
     Semi(Expr),
 }
