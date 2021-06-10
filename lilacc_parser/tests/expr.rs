@@ -126,3 +126,31 @@ fn parse_binary_logical() {
         )
     );
 }
+
+#[test]
+fn parse_block() {
+    test_expr!(
+        "{let x = 0;}",
+        expr_block![Stmt::Local(Local {
+            pat: pat_ident!("x"),
+            init: expr_int!(0),
+        })]
+    );
+
+    test_expr!(
+        "{x+y;}",
+        expr_block![Stmt::Semi(expr_binary!(
+            expr_ident!("x"),
+            BinOp::Add,
+            expr_ident!("y")
+        ))]
+    );
+
+    test_expr!(
+        "{x+y; a+b;}",
+        expr_block![
+            Stmt::Semi(expr_binary!(expr_ident!("x"), BinOp::Add, expr_ident!("y"))),
+            Stmt::Semi(expr_binary!(expr_ident!("a"), BinOp::Add, expr_ident!("b")))
+        ]
+    );
+}
