@@ -1,4 +1,4 @@
-use lilacc_ast::{expr::*, lit::*, op::*, pat::*, stmt::*, token::*, ty::*};
+use lilacc_ast::{block::*, expr::*, lit::*, op::*, pat::*, stmt::*, token::*, ty::*};
 
 grammar;
 
@@ -63,6 +63,9 @@ pub Stmt: Stmt = {
     <expr: Expr> ";" => Stmt::Semi(expr),
 }
 
+pub Block: Block = {
+    "{" <stmts: (<Stmt>)*> "}" => Block {stmts: stmts},
+};
 extern {
     type Location = ();
     type Error = ();
@@ -90,10 +93,22 @@ extern {
 
         "(" => Token::OpenParen,
         ")" => Token::CloseParen,
+        "[" => Token::OpenBracket,
+        "]" => Token::CloseBracket,
+        "{" => Token::OpenBrace,
+        "}" => Token::CloseBrace,
 
+        "." => Token::Dot,
         ";" => Token::Semi,
         ":" => Token::Colon,
 
+        "->" => Token::RArrow,
+        "<-" => Token::LArrow,
+
+
         "let" => Token::Let,
+        "fn" => Token::Fn,
+        "return" => Token::Return,
+
     }
 }

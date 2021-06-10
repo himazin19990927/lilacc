@@ -1,4 +1,4 @@
-use lilacc_ast::{block::*, expr::*, lit::*, op::*, pat::*, stmt::*, *};
+use lilacc_ast::{expr::*, lit::*, op::*, *};
 use lilacc_lexer::Lexer;
 use lilacc_parser::*;
 
@@ -124,33 +124,5 @@ fn parse_binary_logical() {
             BinOp::Or,
             expr_binary!(expr_ident!("b"), BinOp::And, expr_ident!("c"))
         )
-    );
-}
-
-#[test]
-fn parse_block() {
-    test_expr!(
-        "{let x = 0;}",
-        expr_block![Stmt::Local(Local {
-            pat: pat_ident!("x"),
-            init: expr_int!(0),
-        })]
-    );
-
-    test_expr!(
-        "{x+y;}",
-        expr_block![Stmt::Semi(expr_binary!(
-            expr_ident!("x"),
-            BinOp::Add,
-            expr_ident!("y")
-        ))]
-    );
-
-    test_expr!(
-        "{x+y; a+b;}",
-        expr_block![
-            Stmt::Semi(expr_binary!(expr_ident!("x"), BinOp::Add, expr_ident!("y"))),
-            Stmt::Semi(expr_binary!(expr_ident!("a"), BinOp::Add, expr_ident!("b")))
-        ]
     );
 }

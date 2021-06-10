@@ -40,7 +40,7 @@ macro_rules! expr_unary {
 }
 
 #[macro_export]
-macro_rules! expr_block {
+macro_rules! block {
     ( $( $stmt: expr),* ) => {
         {
             let mut stmts = Vec::new();
@@ -48,11 +48,9 @@ macro_rules! expr_block {
                 stmts.push($stmt);
             )*
 
-            Expr::Block(ExprBlock {
-                block: Box::new(Block {
-                        stmts: stmts,
-                })
-            })
+            Block {
+                stmts: stmts,
+            }
         }
     }
 }
