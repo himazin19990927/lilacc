@@ -45,7 +45,7 @@ macro_rules! expr_block {
         {
             let mut stmts = Vec::new();
             $(
-                stmts.push($x);
+                stmts.push($stmt);
             )*
 
             Expr::Block(ExprBlock {
