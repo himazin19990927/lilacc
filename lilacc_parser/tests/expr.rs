@@ -1,4 +1,4 @@
-use lilacc_ast::{expr::*, lit::*, op::*, *};
+use lilacc_ast::{block::*, expr::*, lit::*, op::*, pat::*, stmt::*, *};
 use lilacc_lexer::Lexer;
 use lilacc_parser::*;
 
