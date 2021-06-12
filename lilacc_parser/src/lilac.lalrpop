@@ -1,4 +1,4 @@
-use lilacc_ast::{block::*, expr::*, lit::*, op::*, pat::*, stmt::*, token::*, ty::*};
+use lilacc_ast::{block::*, expr::*, item::*, lit::*, op::*, pat::*, stmt::*, token::*, ty::*};
 
 grammar;
 
@@ -53,19 +53,40 @@ pub Type: Type = {
     "Ident" => Type::Ident(TypeIdent{name: <>}),
 };
 
+PatType: PatType = {
+    <pat: Pat> ":" <ty: Type> => PatType{pat: Box::new(pat), ty: Box::new(ty)},
+};
+
 pub Pat: Pat = {
     "Ident" => Pat::Ident(PatIdent{ident: <>}),
-    <pat: Pat> ":" <ty: Type> => Pat::Type(PatType{pat: Box::new(pat), ty: Box::new(ty)}),
+    <ty: PatType> => Pat::Type(ty),
 };
 
 pub Stmt: Stmt = {
     "let" <pat: Pat> "=" <init: Expr> ";" => Stmt::Local(Local {pat: pat, init: init}),
     <expr: Expr> ";" => Stmt::Semi(expr),
-}
+};
 
 pub Block: Block = {
     "{" <stmts: (<Stmt>)*> "}" => Block {stmts: stmts},
 };
+
+FnArg: FnArg = {
+    <ty: PatType> => FnArg::Typed(ty),
+};
+
+FnSignature: FnSignature = {
+    <ident: "Ident"> "(" <mut args: (<FnArg> ",")*> <last: FnArg> ")" => { args.push(last); FnSignature {ident: ident, input: args}},
+};
+
+ItemFn: ItemFn = {
+    "fn" <sig: FnSignature> <block: Block> => ItemFn {sig: sig, block: Box::new(block)},
+}
+
+pub Item: Item = {
+    <item_fn: ItemFn> => Item::Fn(item_fn),
+};
+
 extern {
     type Location = ();
     type Error = ();
@@ -99,6 +120,7 @@ extern {
         "}" => Token::CloseBrace,
 
         "." => Token::Dot,
+        "," => Token::Comma,
         ";" => Token::Semi,
         ":" => Token::Colon,
 
