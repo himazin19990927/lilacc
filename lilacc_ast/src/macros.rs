@@ -56,6 +56,16 @@ macro_rules! block {
 }
 
 #[macro_export]
+macro_rules! stmt_local {
+    ($pat: expr, $init: expr) => {
+        Stmt::Local(Local {
+            pat: $pat,
+            init: $init,
+        })
+    };
+}
+
+#[macro_export]
 macro_rules! type_ident {
     ($ident: expr) => {
         Type::Ident(TypeIdent {
@@ -147,6 +157,22 @@ mod tests {
             }),
             expr_unary!(UnOp::Neg, expr_int!(10))
         );
+    }
+
+    #[test]
+    fn test_stmt_local() {
+        let stmt = Stmt::Local(Local {
+            pat: Pat::Ident(PatIdent {
+                ident: "x".to_string(),
+            }),
+            init: Expr::Lit(ExprLit {
+                lit: Lit::Int(LitInt {
+                    digits: "1".to_string(),
+                }),
+            }),
+        });
+
+        assert_eq!(stmt, stmt_local!(pat_ident!("x"), expr_int!(1)));
     }
 
     #[test]
