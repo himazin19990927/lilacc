@@ -66,6 +66,13 @@ macro_rules! stmt_local {
 }
 
 #[macro_export]
+macro_rules! stmt_semi {
+    ($expr: expr) => {
+        Stmt::Semi($expr)
+    }
+}
+
+#[macro_export]
 macro_rules! type_ident {
     ($ident: expr) => {
         Type::Ident(TypeIdent {
@@ -173,6 +180,35 @@ mod tests {
         });
 
         assert_eq!(stmt, stmt_local!(pat_ident!("x"), expr_int!(1)));
+    }
+
+    #[test]
+    fn test_stmt_semi() {
+        let stmt = {
+            let left = Expr::Lit(ExprLit {
+                lit: Lit::Int(LitInt {
+                    digits: "1".to_string(),
+                }),
+            });
+            let right = Expr::Lit(ExprLit {
+                lit: Lit::Int(LitInt {
+                    digits: "2".to_string(),
+                }),
+            });
+
+            let expr = Expr::Binary(ExprBinary {
+                left: Box::new(left),
+                op: BinOp::Add,
+                right: Box::new(right),
+            });
+
+            Stmt::Semi(expr)
+        };
+
+        assert_eq!(
+            stmt,
+            stmt_semi!(expr_binary!(expr_int!(1), BinOp::Add, expr_int!(2)))
+        );
     }
 
     #[test]
