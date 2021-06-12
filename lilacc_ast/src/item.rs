@@ -1,4 +1,14 @@
-use crate::pat::*;
+use crate::{block::*, pat::*};
+
+pub enum Item {
+    /// A function item: `fn foo(x: i32) { ... }`
+    Fn(ItemFn),
+}
+
+pub struct ItemFn {
+    pub sig: FnSignature,
+    pub block: Box<Block>,
+}
 
 pub struct FnSignature {
     pub ident: String,
