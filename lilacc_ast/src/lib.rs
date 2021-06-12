@@ -1,5 +1,6 @@
 pub mod block;
 pub mod expr;
+pub mod item;
 pub mod lit;
 pub mod macros;
 pub mod op;
