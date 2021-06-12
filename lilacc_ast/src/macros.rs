@@ -40,22 +40,6 @@ macro_rules! expr_unary {
 }
 
 #[macro_export]
-macro_rules! block {
-    ( $( $stmt: expr),* ) => {
-        {
-            let mut stmts = Vec::new();
-            $(
-                stmts.push($stmt);
-            )*
-
-            Block {
-                stmts: stmts,
-            }
-        }
-    }
-}
-
-#[macro_export]
 macro_rules! stmt_local {
     ($pat: expr, $init: expr) => {
         Stmt::Local(Local {
@@ -70,6 +54,22 @@ macro_rules! stmt_semi {
     ($expr: expr) => {
         Stmt::Semi($expr)
     };
+}
+
+#[macro_export]
+macro_rules! block {
+    ( $( $stmt: expr),* ) => {
+        {
+            let mut stmts = Vec::new();
+            $(
+                stmts.push($stmt);
+            )*
+
+            Block {
+                stmts: stmts,
+            }
+        }
+    }
 }
 
 #[macro_export]
