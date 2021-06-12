@@ -69,7 +69,7 @@ macro_rules! stmt_local {
 macro_rules! stmt_semi {
     ($expr: expr) => {
         Stmt::Semi($expr)
-    }
+    };
 }
 
 #[macro_export]
