@@ -1,6 +1,6 @@
-use lilacc_ast::{expr::*, lit::*, op::*, *};
-use lilacc_lexer::Lexer;
-use lilacc_parser::*;
+use ast::{expr::*, lit::*, op::*, *};
+use lexer::Lexer;
+use parser::*;
 
 macro_rules! test_expr {
     ($input: expr, $expected: expr) => {

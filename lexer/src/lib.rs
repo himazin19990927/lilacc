@@ -1,5 +1,5 @@
 use core::panic;
-use lilacc_ast::{lit::*, token::*};
+use ast::{lit::*, token::*};
 use std::str::Chars;
 
 #[derive(Debug)]

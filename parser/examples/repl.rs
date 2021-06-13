@@ -1,6 +1,6 @@
-use lilacc_ast::expr::Expr;
-use lilacc_lexer::Lexer;
-use lilacc_parser::lilac;
+use ast::expr::Expr;
+use lexer::Lexer;
+use parser::lilac;
 use std::io::{stdout, Write};
 
 fn main() -> std::io::Result<()> {

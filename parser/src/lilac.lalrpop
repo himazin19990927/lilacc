@@ -1,4 +1,4 @@
-use lilacc_ast::{block::*, expr::*, item::*, lit::*, op::*, pat::*, stmt::*, token::*, ty::*};
+use ast::{block::*, expr::*, item::*, lit::*, op::*, pat::*, stmt::*, token::*, ty::*};
 
 grammar;
 

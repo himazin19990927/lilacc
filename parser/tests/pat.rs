@@ -1,6 +1,6 @@
-use lilacc_ast::{pat::*, ty::*, *};
-use lilacc_lexer::Lexer;
-use lilacc_parser::*;
+use ast::{pat::*, ty::*, *};
+use lexer::Lexer;
+use parser::*;
 
 macro_rules! test_pat {
     ($input: expr, $expected: expr) => {

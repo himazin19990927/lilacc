@@ -1,6 +1,6 @@
-use lilacc_ast::{block::*, expr::*, item::*, lit::*, op::*, pat::*, stmt::*, ty::*, *};
-use lilacc_lexer::Lexer;
-use lilacc_parser::*;
+use ast::{block::*, expr::*, item::*, lit::*, op::*, pat::*, stmt::*, ty::*, *};
+use lexer::Lexer;
+use parser::*;
 
 macro_rules! test_item {
     ($input: expr, $expected: expr) => {

@@ -1,5 +1,5 @@
 [package]
-name = "lilacc_parser"
+name = "parser"
 version = "0.1.0"
 authors = ["Taiki Harada"]
 edition = "2018"
@@ -10,8 +10,8 @@ edition = "2018"
 lalrpop = "0.19.5"
 
 [dependencies]
-lilacc_ast = {path = "../lilacc_ast"}
-lilacc_lexer = {path = "../lilacc_lexer"}
+ast = {path = "../ast"}
+lexer = {path = "../lexer"}
 
 lalrpop-util = "0.19.5"
 regex = "1"

@@ -7,6 +7,6 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-lilacc_lexer = {path = "lilacc_lexer"}
-lilacc_parser = {path = "lilacc_parser"}
-lilacc_ast = {path = "lilacc_ast"}
+lexer = {path = "lexer"}
+parser = {path = "parser"}
+ast = {path = "ast"}
